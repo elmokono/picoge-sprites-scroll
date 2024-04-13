@@ -21,7 +21,7 @@ ulong lastMillis;
 #ifdef USEJOY
 ulong lastMillisJoy;
 bool button1Pressed = false, button2Pressed = false, button3Pressed = false;
-uint millisToJoy = 100;
+uint millisToJoy = 1;
 float xCenterAvg = 0;
 float yCenterAvg = 0;
 float stickXCenter = 512;

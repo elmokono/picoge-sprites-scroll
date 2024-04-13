@@ -35,7 +35,7 @@ void GFXcanvas16Opt::drawRGBBitmap(int16_t x, int16_t y, const uint16_t *bitmap,
 
 void GFXcanvas16Opt::drawRGBBitmap(int16_t x, int16_t y, const uint16_t *bitmap, uint16_t w, uint16_t h)
 {
-  if (x + w <= 0 | y + h <= 0 | y >= height() | x >= width())
+  if ((x + w <= 0) | (y + h <= 0) | (y >= height()) | (x >= width()))
     return;
 
   uint16_t *buff = getBuffer();
