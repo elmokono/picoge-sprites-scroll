@@ -8,7 +8,7 @@
 
 // #define USEFPSLOCK
 // #define USERGBLED
-#define USEFPSCOUNTER
+//#define USEFPSCOUNTER
 #define USEJOY
 
 Adafruit_ST7735 *tft = new Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
@@ -71,6 +71,8 @@ void Engine::reset()
     pinMode(JOY_B3, INPUT_PULLUP);
     lastMillisJoy = millis();
 #endif
+
+    //loadJSONFile("{\"jsonVersion\":\"\"}", "res/map.json");
 }
 inputs_state Engine::inputs()
 {

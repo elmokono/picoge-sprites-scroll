@@ -62,7 +62,7 @@ void GFXcanvas16Opt::drawRGBBitmap(int16_t x, int16_t y, const uint16_t *bitmap,
   for (uint16_t j = 0 + offsetY; j < h; j++)
     memcpy(
         &buff[(y + j) * width() + (x + offsetX)],
-        &bitmap[(offsetY + j) * w + (offsetX)],
+        &bitmap[j * w + offsetX],
         size);
 }
 
