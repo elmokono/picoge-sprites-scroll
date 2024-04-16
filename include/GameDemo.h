@@ -1,13 +1,5 @@
 #include <engine_core.h>
 
-class Point
-{
-    public:
-    Point();
-    Point(int x, int y);
-    int x, y;
-};
-
 class GameDemo
 {
     public:
