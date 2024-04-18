@@ -1,5 +1,4 @@
 #include <engine_core.h>
-
 class GameDemo
 {
     public:

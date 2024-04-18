@@ -2,14 +2,16 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <sprites.h>
-#include <maps.h>
+#include "player.h"
+#include "sprites.h"
+#include "maps.h"
 #include "GameDemo.h"
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 #define MAGENTA 0xF81F
 
 Engine *engine_core_ref;
+Player *player = new Player();
 
 float scrollX, scrollY = 0.0;
 
@@ -28,16 +30,17 @@ void GameDemo::process_joy(joystick_state joy)
   if (joy.novalue)
     return;
 
-  if (joy.x >= 0.8 && scrollX < (level0.cellWidth * level0.mapCellsWidth) - engine_core_ref->canvas->width())
-    scrollX += 1;
+  if (joy.x >= 0.8)// && scrollX < (level0.cellWidth * level0.mapCellsWidth) - engine_core_ref->canvas->width())
+    player->move(true);
+    //scrollX += 1;
   if (joy.y >= 0.8 && scrollY < (level0.cellHeight * level0.mapCellsHeight) - engine_core_ref->canvas->height())
     scrollY += 1;
-  if (joy.x <= -0.8 && scrollX > 0)
-    scrollX -= 1;
+  if (joy.x <= -0.8)// && scrollX > 0)
+    player->move(false);//scrollX -= 1;
   if (joy.y <= -0.8 && scrollY > 0)
     scrollY -= 1;
   if (joy.b1)
-    engine_core_ref->rgb(0, 0, 0);
+    player->jump();
 }
 
 void GameDemo::process_inputs(inputs_state state)
@@ -48,6 +51,7 @@ void GameDemo::process_inputs(inputs_state state)
 void GameDemo::gameLogic(void)
 {
   //character
+  player->update();
 
   //npcs
 
@@ -70,4 +74,7 @@ void GameDemo::draw(void)
 
     engine_core_ref->canvas->drawRGBBitmap(x - scrollX, y - scrollY, level0.cells[i], level0.cellWidth, level0.cellHeight);
   }
+
+  // player
+  engine_core_ref->canvas->drawRGBBitmap(player->playerPos.x, player->playerPos.y - 32, player->currentSprite, 32, 32, 0xFFFF);
 }

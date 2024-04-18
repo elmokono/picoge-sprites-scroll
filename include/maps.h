@@ -1,13 +1,4 @@
 // maps and sprites
-struct point
-{
-    const unsigned short x, y;
-};
-struct rect
-{
-    const point p1, p2;
-};
-
 struct level
 {
   const char *name;
