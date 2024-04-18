@@ -9,7 +9,7 @@ point playerAccel = {0.0, 0.0};
 unsigned short playerAnimation = 0;
 unsigned long playerAnimationTimer = millis();
 
-const rect test_collisions[1] = {{{0, 112}, {128, 16}}};
+const rect test_collisions[1] = {{{0,240}, {12*16, 16}}};
 
 void Player::update()
 {
