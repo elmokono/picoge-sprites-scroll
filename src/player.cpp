@@ -25,7 +25,7 @@ void Player::update(const rect *collisions, uint16_t collisions_length)
     for (size_t i = 0; i < collisions_length; i++)
     {
         if (
-            ((playerPos.x + playerWidth) >= collisions[i].p1.x) &&
+            ((playerPos.x + playerWidth - 1) >= collisions[i].p1.x) &&
             (playerPos.x <= collisions[i].p2.x) &&
             (playerPos.y >= collisions[i].p1.y) &&
             ((playerPos.y - playerHeight) <= collisions[i].p2.y)
@@ -51,7 +51,7 @@ void Player::update(const rect *collisions, uint16_t collisions_length)
     for (size_t i = 0; i < collisions_length; i++)
     {
         if (
-            ((playerPos.x + playerWidth) >= collisions[i].p1.x) &&
+            ((playerPos.x + playerWidth - 1) >= collisions[i].p1.x) &&
             (playerPos.x <= collisions[i].p2.x) &&
             (playerPos.y >= collisions[i].p1.y) &&
             ((playerPos.y - playerHeight) <= collisions[i].p2.y)
@@ -113,7 +113,7 @@ void Player::jump(void)
 {
     if (playerAccel.y != 0)
         return;
-        
+
     playerAccel.y = -3.0;
     playerState = PLAYER_JUMPING;
 }
