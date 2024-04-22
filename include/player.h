@@ -17,7 +17,7 @@ public:
     bool playerFacingRight = true;
     unsigned short* currentSprite;
 
-    void update(void);
+    void update(const rect *collisions, u_int16_t collisions_length);
     void move(bool moveRight);
     void jump(void);
 private:

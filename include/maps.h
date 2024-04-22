@@ -7,7 +7,7 @@ struct level
   const unsigned short cellWidth; //in pixels
   const unsigned short cellHeight; //in pixels
   const unsigned short *cells[12*16]; // pointers to sprites 12x16
-  const rect collisions[1]; // map of collisions
+  const rect collisions[4]; // map of collisions
 };
 
 
@@ -24,24 +24,29 @@ const level level0 = {
   blockSize, 
   blockSize,
   {
-    dirt, grass, dirt, grass, dirt, grass, dirt, grass, dirt, grass, dirt, grass,
-    grass, dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt, dirt, dirt, dirt,
+    dirt, dirt, dirt, dirt, dirt, dirt, dirt, dirt, dirt, dirt, dirt, dirt,
+    dirt, dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt, dirt, dirt, dirt,
     dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt, dirt,
-    grass, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt,
-    dirt, grass, grass, grass, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt,
-    grass, dirt, dirt, dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt,
-    dirt, nullptr, dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt,
-    grass, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt,
     dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt,
-    grass, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt, dirt, dirt,
-    dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt, dirt,
-    grass, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt, dirt,
-    dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt, dirt,
-    grass, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt, dirt,
-    dirt, grass, grass, grass, grass, grass, grass, grass, grass, grass, grass, dirt,
-    grass, dirt, grass, dirt, grass, dirt, grass, dirt, grass, dirt, grass, dirt
+    dirt, grass, grass, grass, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt,
+    dirt, dirt, dirt, dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt,
+    dirt, nullptr, dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt,
+    dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt,
+    dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, dirt,
+    dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, grass, dirt,
+    dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, grass, grass, dirt,
+    dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, grass, dirt, nullptr, dirt,
+    dirt, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, grass, dirt, nullptr, nullptr, dirt,
+    dirt, nullptr, nullptr, grass, nullptr, nullptr, grass, dirt, nullptr, nullptr, nullptr, dirt,
+    dirt, grass, grass, dirt, grass, grass, dirt, dirt, grass, grass, grass, dirt,
+    dirt, dirt, dirt, dirt, dirt, dirt, dirt, dirt, dirt, dirt, dirt, dirt
   },
+  //x1,y1,x2,y2
   { 
-    {{0, 0}, {blockSize * mapCellsWidth, blockSize * 1}}
+    {{0, 0}, {blockSize * 1, blockSize * mapCellsHeight}}, //left
+    {{0, 0}, {blockSize * 5, blockSize * 1}}, //top
+    {{0, blockSize * (mapCellsHeight - 1)}, {blockSize * mapCellsWidth, blockSize * mapCellsHeight}}, //bottom
+    {{blockSize * (mapCellsWidth-1), 0}, {blockSize * mapCellsWidth, blockSize * mapCellsHeight}} //right
   }
 };
+//const rect test_collisions[1] = {{{0,240}, {12*16, 16}}};

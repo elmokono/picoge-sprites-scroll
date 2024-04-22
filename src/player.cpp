@@ -8,35 +8,74 @@
 point playerAccel = {0.0, 0.0};
 unsigned short playerAnimation = 0;
 unsigned long playerAnimationTimer = millis();
+uint16_t playerWidth = 32;
+uint16_t playerHeight = 32;
 
-const rect test_collisions[1] = {{{0,240}, {12*16, 16}}};
-
-void Player::update()
+void Player::update(const rect *collisions, uint16_t collisions_length)
 {
     playerAccel.x *= 0.9; // slowdown
-    playerPos.x += playerAccel.x;
     if (abs(playerAccel.x) < 0.01)
     {
         playerAccel.x = 0;
     }
-
     playerAccel.y += 0.15; // gravity acceleration
-    playerPos.y += playerAccel.y;
 
     // collisions
-    for (size_t i = 0; i < ARRAY_SIZE(test_collisions); i++)
+    playerPos.y += playerAccel.y;
+    for (size_t i = 0; i < collisions_length; i++)
     {
-        if (playerPos.y > test_collisions[i].p1.y - 1)
+        if (
+            ((playerPos.x + playerWidth) >= collisions[i].p1.x) &&
+            (playerPos.x <= collisions[i].p2.x) &&
+            (playerPos.y >= collisions[i].p1.y) &&
+            ((playerPos.y - playerHeight) <= collisions[i].p2.y)
+        )
         {
-            playerPos.y = test_collisions[i].p1.y - 1;
-            playerState = PLAYER_IDLE;
-            break;
+            if (playerAccel.y > 0)
+            {
+                playerPos.y -= playerAccel.y;
+                playerAccel.y = 0;
+                playerState = PLAYER_IDLE;
+                break;
+            }
+            else if (playerAccel.y < 0)
+            {
+                playerPos.y -= playerAccel.y;
+                playerAccel.y = 0;
+                break;
+            }         
+        }
+    }
+
+    playerPos.x += playerAccel.x;    
+    for (size_t i = 0; i < collisions_length; i++)
+    {
+        if (
+            ((playerPos.x + playerWidth) >= collisions[i].p1.x) &&
+            (playerPos.x <= collisions[i].p2.x) &&
+            (playerPos.y >= collisions[i].p1.y) &&
+            ((playerPos.y - playerHeight) <= collisions[i].p2.y)
+        )
+        {
+            if (playerAccel.x > 0)
+            {
+                playerPos.x -= playerAccel.x;
+                playerAccel.x = 0;
+                playerState = PLAYER_IDLE;
+                break;
+            }
+            else if (playerAccel.x < 0)
+            {
+                playerPos.x -= playerAccel.x;
+                playerAccel.x = 0;
+                playerState = PLAYER_IDLE;
+                break;
+            }            
         }
     }
 
     if (millis() - playerAnimationTimer > 100)
     {
-        playerAnimationTimer = millis();
         switch (playerState)
         {
         case PLAYER_IDLE:
@@ -48,6 +87,7 @@ void Player::update()
         default:
             break;
         }
+        playerAnimationTimer = millis();
     }
 }
 
@@ -71,7 +111,9 @@ void Player::move(bool moveRight)
 
 void Player::jump(void)
 {
-    if (playerState == PLAYER_JUMPING) return;
+    if (playerAccel.y != 0)
+        return;
+        
     playerAccel.y = -3.0;
     playerState = PLAYER_JUMPING;
 }

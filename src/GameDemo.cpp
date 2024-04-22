@@ -23,7 +23,18 @@ GameDemo::GameDemo(Engine *engine_core)
 
 void GameDemo::reset()
 {
+  player->playerPos = playerStartingPos;
 
+/*while (!Serial.available()){}
+  for (size_t i = 0; i < ARRAY_SIZE(level0.collisions); i++)
+    {
+      Serial.print(level0.collisions[i].p1.x); Serial.print(",");
+      Serial.print(level0.collisions[i].p1.y); Serial.print("/");
+      Serial.print(level0.collisions[i].p2.x); Serial.print(",");
+      Serial.print(level0.collisions[i].p2.y); Serial.println();
+
+
+    }*/
 }
 
 void GameDemo::process_joy(joystick_state joy)
@@ -31,12 +42,12 @@ void GameDemo::process_joy(joystick_state joy)
   if (joy.novalue)
     return;
 
-  if (joy.x >= 0.8) // && scrollX < (level0.cellWidth * level0.mapCellsWidth) - engine_core_ref->canvas->width())
+  if (joy.x <= -0.8) // && scrollX < (level0.cellWidth * level0.mapCellsWidth) - engine_core_ref->canvas->width())
     player->move(true);
   // scrollX += 1;
   // if (joy.y >= 0.8 && scrollY < (level0.cellHeight * level0.mapCellsHeight) - engine_core_ref->canvas->height())
   //   scrollY += 1;
-  if (joy.x <= -0.8)     // && scrollX > 0)
+  if (joy.x >= 0.8)     // && scrollX > 0)
     player->move(false); // scrollX -= 1;
   // if (joy.y <= -0.8 && scrollY > 0)
   //   scrollY -= 1;
@@ -52,7 +63,7 @@ void GameDemo::process_inputs(inputs_state state)
 void GameDemo::gameLogic(void)
 {
   // character
-  player->update();
+  player->update(&level0.collisions[0], ARRAY_SIZE(level0.collisions));
 
   // npcs
 
@@ -63,14 +74,35 @@ void GameDemo::draw(void)
 {
   engine_core_ref->canvas->fillBitmap(&bgImage[0]);
 
+  /*  
+  (0,0)------------------
+  |                     |
+  |  (16,48)**********  |
+  |  *****************  |
+  |  *****************  |
+  |  **********(64,96)  |
+  |                     |
+  --------------(128,128)
+
+  player.x (right) -> -scrollX
+  player.y (down) -> -scrollY
+
+  player = (x + scrollX, y + scrollY)
+
+  */
+
   if (player->playerPos.x + scrollX > 64)
     scrollX--;
-  if (player->playerPos.x + scrollX < 32)
+
+  if (player->playerPos.x + scrollX < 16)
     scrollX++;
-  if (player->playerPos.y + scrollY > 64)
-    scrollY--;
-  if (player->playerPos.y + scrollY < 32)
-    scrollY++;
+  
+  if (player->playerPos.y + scrollY > 96)
+    scrollY-= player->playerPos.y + scrollY - 96;
+
+  if (player->playerPos.y + scrollY < 48)
+    scrollY++;//= player->playerPos.y + scrollY - 32 + 16;
+
   // if (player->playerPos.x < 32) scrollX++;
   // if (player->playerPos.y > engine_core_ref->canvas->height() - 32) scrollY++;
   // if (player->playerPos.y < 32) scrollY--;
