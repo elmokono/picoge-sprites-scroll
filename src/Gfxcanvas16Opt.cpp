@@ -3,10 +3,18 @@
 
 GFXcanvas16Opt::GFXcanvas16Opt(uint16_t w, uint16_t h) : GFXcanvas16(w, h) {}
 
+void __attribute__((optimize("O3"))) *memcpy2(uint16_t *dest, const uint16_t *src, size_t n)
+{
+        uint16_t *d = dest;
+        while(n--) *d++ = *(uint16_t*)src++;
+        return dest;
+}
+
 void GFXcanvas16Opt::fillBitmap(const uint16_t *bitmap)
 {
   uint16_t *buff = getBuffer();
-  memcpy(buff, bitmap, height() * width() * sizeof(uint16_t));
+  //memcpy(buff, bitmap, height() * width() * sizeof(uint16_t));
+  memcpy2(buff, bitmap, height() * width());
 }
 
 void GFXcanvas16Opt::fillBitmap(const uint16_t *bitmap, uint16_t keyColor)
@@ -39,17 +47,20 @@ void GFXcanvas16Opt::drawRGBBitmap(int16_t x, int16_t y, const uint16_t *bitmap,
     return;
 
   uint16_t *buff = getBuffer();
-  uint16_t size = w * sizeof(uint16_t);
+  //uint16_t size = w * sizeof(uint16_t);
+  uint16_t size = w;
   uint16_t offsetX = 0, offsetY = 0;
 
   if (x < 0)
   {
     offsetX = -x;
-    size += x * sizeof(uint16_t);
+    //size += x * sizeof(uint16_t);
+    size += x;
   }
   if (x + w > width())
   {
-    size = (width() - x) * sizeof(uint16_t);
+    //size = (width() - x) * sizeof(uint16_t);
+    size = (width() - x);
   }
   if (y < 0)
   {
@@ -60,7 +71,11 @@ void GFXcanvas16Opt::drawRGBBitmap(int16_t x, int16_t y, const uint16_t *bitmap,
     h = height() - y;
   }
   for (uint16_t j = 0 + offsetY; j < h; j++)
-    memcpy(
+    /*memcpy(
+        &buff[(y + j) * width() + (x + offsetX)],
+        &bitmap[j * w + offsetX],
+        size);*/
+    memcpy2(
         &buff[(y + j) * width() + (x + offsetX)],
         &bitmap[j * w + offsetX],
         size);
