@@ -12,6 +12,7 @@ struct level
 
 
 const point playerStartingPos = {64, 128};
+const point npcStartingPos = {96, 96};
 const unsigned short mapCellsWidth = 12;
 const unsigned short mapCellsHeight = 16;
 const unsigned short blockSize = 16;

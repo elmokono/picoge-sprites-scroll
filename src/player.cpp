@@ -4,12 +4,27 @@
 #include <cmath>
 #include "player.h"
 #include "player_sprites.h"
+#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
-point playerAccel = {0.0, 0.0};
-unsigned short playerAnimation = 0;
-unsigned long playerAnimationTimer = millis();
-uint16_t playerWidth = 32;
-uint16_t playerHeight = 32;
+const char PLAYER_IDLE = 0;
+const char PLAYER_WALKING = 1;
+const char PLAYER_CROUCHING = 2;
+const char PLAYER_HITTING = 3;
+const char PLAYER_JUMPING = 4;
+
+Player::Player()
+{
+    playerAccel = {0.0, 0.0};
+    playerAnimation = 0;
+    playerAnimationTimer = millis();
+    playerWidth = 32;
+    playerHeight = 32;
+
+    playerState = PLAYER_IDLE;
+    playerPos = {0, 0};
+    playerFacingRight = true;
+    currentSprite = idle[playerAnimation];
+}
 
 void Player::update(const rect *collisions, uint16_t collisions_length)
 {
@@ -28,8 +43,7 @@ void Player::update(const rect *collisions, uint16_t collisions_length)
             ((playerPos.x + playerWidth - 1) >= collisions[i].p1.x) &&
             (playerPos.x <= collisions[i].p2.x) &&
             (playerPos.y >= collisions[i].p1.y) &&
-            ((playerPos.y - playerHeight) <= collisions[i].p2.y)
-        )
+            ((playerPos.y - playerHeight) <= collisions[i].p2.y))
         {
             if (playerAccel.y > 0)
             {
@@ -43,19 +57,18 @@ void Player::update(const rect *collisions, uint16_t collisions_length)
                 playerPos.y -= playerAccel.y;
                 playerAccel.y = 0;
                 break;
-            }         
+            }
         }
     }
 
-    playerPos.x += playerAccel.x;    
+    playerPos.x += playerAccel.x;
     for (size_t i = 0; i < collisions_length; i++)
     {
         if (
             ((playerPos.x + playerWidth - 1) >= collisions[i].p1.x) &&
             (playerPos.x <= collisions[i].p2.x) &&
             (playerPos.y >= collisions[i].p1.y) &&
-            ((playerPos.y - playerHeight) <= collisions[i].p2.y)
-        )
+            ((playerPos.y - playerHeight) <= collisions[i].p2.y))
         {
             if (playerAccel.x > 0)
             {
@@ -70,7 +83,7 @@ void Player::update(const rect *collisions, uint16_t collisions_length)
                 playerAccel.x = 0;
                 playerState = PLAYER_IDLE;
                 break;
-            }            
+            }
         }
     }
 

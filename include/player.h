@@ -1,25 +1,28 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include "structs.h"
-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
-
-const char PLAYER_IDLE = 0;
-const char PLAYER_WALKING = 1;
-const char PLAYER_CROUCHING = 2;
-const char PLAYER_HITTING = 3;
-const char PLAYER_JUMPING = 4;
-
-//sprites
-
 class Player
 {
 public:
-    char playerState = PLAYER_IDLE;
-    point playerPos = {0, 0};
-    bool playerFacingRight = true;
-    unsigned short* currentSprite;
+    char playerState;
+    point playerPos;
+    bool playerFacingRight;
+    unsigned short *currentSprite;
+
+    point playerAccel;
+    unsigned short playerAnimation;
+    unsigned long playerAnimationTimer;
+    uint16_t playerWidth;
+    uint16_t playerHeight;
+
+    Player(void);
 
     void update(const rect *collisions, u_int16_t collisions_length);
     void move(bool moveRight);
     void jump(void);
+
 private:
-    
 };
+
+#endif
