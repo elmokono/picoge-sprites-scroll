@@ -10,7 +10,7 @@
 #define MAGENTA 0xF81F
 
 Engine *engine_core_ref;
-Player npc;
+Player npc[3];
 Player player;
 
 float scrollX, scrollY = 0.0;
@@ -23,8 +23,9 @@ GameDemo::GameDemo(Engine *engine_core)
 
 void GameDemo::reset()
 {
-  player.playerPos = playerStartingPos;
-  npc.playerPos = npcStartingPos;
+  player.playerPos = level0.player;
+  for (size_t i = 0; i < ARRAY_SIZE(level0.npcs); i++)
+    npc[i].playerPos = level0.npcs[i];
 
 /*while (!Serial.available()){}
   for (size_t i = 0; i < ARRAY_SIZE(level0.collisions); i++)
@@ -67,8 +68,9 @@ void GameDemo::gameLogic(void)
   player.update(&level0.collisions[0], ARRAY_SIZE(level0.collisions));
 
   // npcs
-  npc.update(&level0.collisions[0], ARRAY_SIZE(level0.collisions));
-  npc.move(false);
+  for (size_t i = 0; i < ARRAY_SIZE(level0.npcs); i++)
+    npc[i].update(&level0.collisions[0], ARRAY_SIZE(level0.collisions));
+  //npc.move(false);
 
   // scene
 }
@@ -126,7 +128,8 @@ void GameDemo::draw(void)
   engine_core_ref->canvas->drawRGBBitmap(player.playerPos.x + scrollX, player.playerPos.y - 32 + scrollY, player.currentSprite, 32, 32, 0x0000);
 
   // npc
-  engine_core_ref->canvas->drawRGBBitmap(npc.playerPos.x + scrollX, npc.playerPos.y - 32 + scrollY, npc.currentSprite, 32, 32, 0x0000);
+  for (size_t i = 0; i < ARRAY_SIZE(level0.npcs); i++)
+    engine_core_ref->canvas->drawRGBBitmap(npc[i].playerPos.x + scrollX, npc[i].playerPos.y - 32 + scrollY, npc[i].currentSprite, 32, 32, 0x0000);
 
   // Serial.println(scrollX);
 }

@@ -1,22 +1,21 @@
 // maps and sprites
 struct level
 {
-  const char *name;
-  const unsigned short mapCellsWidth; //amount of cells
-  const unsigned short mapCellsHeight; //amount of cells
-  const unsigned short cellWidth; //in pixels
-  const unsigned short cellHeight; //in pixels
+  char *name;
+  unsigned short mapCellsWidth; //amount of cells
+  unsigned short mapCellsHeight; //amount of cells
+  unsigned short cellWidth; //in pixels
+  unsigned short cellHeight; //in pixels
   const unsigned short *cells[12*16]; // pointers to sprites 12x16
-  const rect collisions[4]; // map of collisions
+  rect collisions[4]; // map of collisions
+  point npcs[3];
+  point player;
 };
 
-
-const point playerStartingPos = {64, 128};
-const point npcStartingPos = {96, 96};
-const unsigned short mapCellsWidth = 12;
-const unsigned short mapCellsHeight = 16;
-const unsigned short blockSize = 16;
-const char* title = "Level 0 - Demo";
+unsigned short mapCellsWidth = 12;
+unsigned short mapCellsHeight = 16;
+unsigned short blockSize = 16;
+char* title = "Level 0 - Demo";
 
 const level level0 = {
   title, 
@@ -48,6 +47,11 @@ const level level0 = {
     {{0, 0}, {blockSize * 5, blockSize * 1}}, //top
     {{0, blockSize * (mapCellsHeight - 1)}, {blockSize * mapCellsWidth, blockSize * mapCellsHeight}}, //bottom
     {{blockSize * (mapCellsWidth-1), 0}, {blockSize * mapCellsWidth, blockSize * mapCellsHeight}} //right
-  }
+  },
+  //npcs
+  {{96, 128},{32, 128},{72, 128}}
+  ,
+  //player
+  {64, 128}
 };
 //const rect test_collisions[1] = {{{0,240}, {12*16, 16}}};
