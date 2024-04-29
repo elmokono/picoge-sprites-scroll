@@ -1,3 +1,5 @@
+#ifndef PLAYER_SPRITES_H
+#define PLAYER_SPRITES_H
 #include <avr/pgmspace.h>
 
 unsigned short idle0[1024] PROGMEM={
@@ -332,3 +334,4 @@ unsigned short idle4[1024] PROGMEM={
 };
 
 unsigned short* idle[5] PROGMEM = { idle0, idle1, idle2, idle3, idle4 };
+#endif

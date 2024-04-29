@@ -7,7 +7,8 @@ GameDemo *game;
 
 void setup()
 {
-  Serial.begin(115200);
+  //while(!Serial.available()){}
+  Serial.begin(115200);  
 
   engine = new Engine();
   game = new GameDemo(engine);

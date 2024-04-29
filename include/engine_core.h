@@ -1,3 +1,5 @@
+#ifndef ENGINE_CORE_H
+#define ENGINE_CORE_H
 #include <Arduino.h>
 #include <Adafruit_ST7735.h> // gpu driver
 #include <GFXcanvas16Opt.h> // canvas layer
@@ -70,3 +72,4 @@ public:
     GFXcanvas16Opt *canvas;
 private:
 };
+#endif

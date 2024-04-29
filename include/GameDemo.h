@@ -1,3 +1,5 @@
+#ifndef GAMEDEMO_H
+#define GAMEDEMO_H
 #include <engine_core.h>
 class GameDemo
 {
@@ -11,3 +13,4 @@ class GameDemo
 private:
     
 };
+#endif

@@ -4,7 +4,9 @@
 #include <cmath>
 #include "player.h"
 #include "player_sprites.h"
+#ifndef ARRAY_SIZE
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+#endif
 
 const char PLAYER_IDLE = 0;
 const char PLAYER_WALKING = 1;

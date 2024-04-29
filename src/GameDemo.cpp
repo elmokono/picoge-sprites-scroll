@@ -2,14 +2,17 @@
 #include <stdlib.h>
 #include <time.h>
 #include "player.h"
-#include "sprites.h"
 #include "maps.h"
 #include "GameDemo.h"
 
-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+// #ifndef ARRAY_SIZE
+// #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+// #endif
 #define MAGENTA 0xF81F
 
 Engine *engine_core_ref;
+uint16_t levelNumber = 0;
+level currentLevel;
 Player npc[3];
 Player player;
 
@@ -23,20 +26,23 @@ GameDemo::GameDemo(Engine *engine_core)
 
 void GameDemo::reset()
 {
-  player.playerPos = level0.player;
-  for (size_t i = 0; i < ARRAY_SIZE(level0.npcs); i++)
-    npc[i].playerPos = level0.npcs[i];
+  currentLevel = initMap(levelNumber);
 
-/*while (!Serial.available()){}
-  for (size_t i = 0; i < ARRAY_SIZE(level0.collisions); i++)
-    {
-      Serial.print(level0.collisions[i].p1.x); Serial.print(",");
-      Serial.print(level0.collisions[i].p1.y); Serial.print("/");
-      Serial.print(level0.collisions[i].p2.x); Serial.print(",");
-      Serial.print(level0.collisions[i].p2.y); Serial.println();
+  player.playerPos = currentLevel.player;
+  for (size_t i = 0; i < currentLevel.npcs_count; i++)
+    npc[i].playerPos = currentLevel.npcs[i];
+
+  /*while (!Serial.available()){}
+    for (size_t i = 0; i < ARRAY_SIZE(level0.collisions); i++)
+      {
+        Serial.print(level0.collisions[i].p1.x); Serial.print(",");
+        Serial.print(level0.collisions[i].p1.y); Serial.print("/");
+        Serial.print(level0.collisions[i].p2.x); Serial.print(",");
+        Serial.print(level0.collisions[i].p2.y); Serial.println();
 
 
-    }*/
+      }*/
+  Serial.println("reset");
 }
 
 void GameDemo::process_joy(joystick_state joy)
@@ -54,7 +60,7 @@ void GameDemo::process_joy(joystick_state joy)
   // if (joy.y <= -0.8 && scrollY > 0)
   //   scrollY -= 1;
   if (joy.b1)
-    player.jump();    
+    player.jump();
 }
 
 void GameDemo::process_inputs(inputs_state state)
@@ -65,21 +71,21 @@ void GameDemo::process_inputs(inputs_state state)
 void GameDemo::gameLogic(void)
 {
   // character
-  player.update(&level0.collisions[0], ARRAY_SIZE(level0.collisions));
+  player.update(&currentLevel.collisions[0], currentLevel.collisions_count);
 
   // npcs
-  for (size_t i = 0; i < ARRAY_SIZE(level0.npcs); i++)
-    npc[i].update(&level0.collisions[0], ARRAY_SIZE(level0.collisions));
-  //npc.move(false);
+  for (size_t i = 0; i < currentLevel.npcs_count; i++)
+    npc[i].update(&currentLevel.collisions[0], currentLevel.collisions_count);
+  // npc.move(false);
 
   // scene
 }
 
 void GameDemo::draw(void)
-{
-  engine_core_ref->canvas->fillBitmap(&bgImage[0]);
-
-  /*  
+{  
+  engine_core_ref->canvas->fillBitmap(&currentLevel.bgImage[0]);
+  
+  /*
   (0,0)------------------
   |                     |
   |  (16,48)**********  |
@@ -101,35 +107,35 @@ void GameDemo::draw(void)
 
   if (player.playerPos.x + scrollX < 16)
     scrollX++;
-  
+
   if (player.playerPos.y + scrollY > 96)
-    scrollY-= player.playerPos.y + scrollY - 96;
+    scrollY -= player.playerPos.y + scrollY - 96;
 
   if (player.playerPos.y + scrollY < 48)
-    scrollY++;//= player.playerPos.y + scrollY - 32 + 16;
+    scrollY++; //= player.playerPos.y + scrollY - 32 + 16;
 
   // if (player.playerPos.x < 32) scrollX++;
   // if (player.playerPos.y > engine_core_ref->canvas->height() - 32) scrollY++;
   // if (player.playerPos.y < 32) scrollY--;
 
   // tiles
-  for (unsigned short i = 0; i < ARRAY_SIZE(level0.cells); i++)
+  for (unsigned short i = 0; i < currentLevel.cells_count; i++)
   {
-    if (level0.cells[i] == nullptr)
+    if (currentLevel.cells[i] == nullptr)
       continue;
 
-    const unsigned short y = (i / level0.mapCellsWidth) * level0.cellHeight;
-    const unsigned short x = (i % level0.mapCellsWidth) * level0.cellWidth;
+    const unsigned short y = (i / currentLevel.mapCellsWidth) * currentLevel.cellHeight;
+    const unsigned short x = (i % currentLevel.mapCellsWidth) * currentLevel.cellWidth;
 
-    engine_core_ref->canvas->drawRGBBitmap(x + scrollX, y + scrollY, level0.cells[i], level0.cellWidth, level0.cellHeight);
+    engine_core_ref->canvas->drawRGBBitmap(x + scrollX, y + scrollY, currentLevel.cells[i], currentLevel.cellWidth, currentLevel.cellHeight);
   }
 
   // player
   engine_core_ref->canvas->drawRGBBitmap(player.playerPos.x + scrollX, player.playerPos.y - 32 + scrollY, player.currentSprite, 32, 32, 0x0000);
 
   // npc
-  for (size_t i = 0; i < ARRAY_SIZE(level0.npcs); i++)
+  for (size_t i = 0; i < currentLevel.npcs_count; i++)
     engine_core_ref->canvas->drawRGBBitmap(npc[i].playerPos.x + scrollX, npc[i].playerPos.y - 32 + scrollY, npc[i].currentSprite, 32, 32, 0x0000);
 
-  // Serial.println(scrollX);
+  //Serial.println(currentLevel.npcs_count);
 }

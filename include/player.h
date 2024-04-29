@@ -6,11 +6,11 @@ class Player
 {
 public:
     char playerState;
-    point playerPos;
+    precisionPoint playerPos;
     bool playerFacingRight;
     unsigned short *currentSprite;
 
-    point playerAccel;
+    precisionPoint playerAccel;
     unsigned short playerAnimation;
     unsigned long playerAnimationTimer;
     uint16_t playerWidth;

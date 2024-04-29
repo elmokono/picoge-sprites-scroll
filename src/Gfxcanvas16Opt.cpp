@@ -10,14 +10,14 @@ void __attribute__((optimize("O3"))) *memcpy2(uint16_t *dest, const uint16_t *sr
         return dest;
 }
 
-void GFXcanvas16Opt::fillBitmap(const uint16_t *bitmap)
+void GFXcanvas16Opt::fillBitmap(uint16_t *bitmap)
 {
   uint16_t *buff = getBuffer();
   //memcpy(buff, bitmap, height() * width() * sizeof(uint16_t));
   memcpy2(buff, bitmap, height() * width());
 }
 
-void GFXcanvas16Opt::fillBitmap(const uint16_t *bitmap, uint16_t keyColor)
+void GFXcanvas16Opt::fillBitmap(uint16_t *bitmap, uint16_t keyColor)
 {
   uint16_t color;
   uint16_t *buff = getBuffer();
@@ -29,7 +29,7 @@ void GFXcanvas16Opt::fillBitmap(const uint16_t *bitmap, uint16_t keyColor)
   }
 }
 
-void GFXcanvas16Opt::drawRGBBitmap(int16_t x, int16_t y, const uint16_t *bitmap, uint16_t w, uint16_t h, uint16_t keyColor)
+void GFXcanvas16Opt::drawRGBBitmap(int16_t x, int16_t y, uint16_t *bitmap, uint16_t w, uint16_t h, uint16_t keyColor)
 {
   uint16_t pixel;
   for (int16_t j = 0; j < h; j++, y++)
@@ -41,7 +41,7 @@ void GFXcanvas16Opt::drawRGBBitmap(int16_t x, int16_t y, const uint16_t *bitmap,
     }
 }
 
-void GFXcanvas16Opt::drawRGBBitmap(int16_t x, int16_t y, const uint16_t *bitmap, uint16_t w, uint16_t h)
+void GFXcanvas16Opt::drawRGBBitmap(int16_t x, int16_t y, uint16_t *bitmap, uint16_t w, uint16_t h)
 {
   if ((x + w <= 0) | (y + h <= 0) | (y >= height()) | (x >= width()))
     return;
@@ -92,7 +92,7 @@ void GFXcanvas16Opt::drawRGBBitmap(int16_t x, int16_t y, const uint16_t *bitmap,
 @param h: sprite height
 @param keyColor: transparent color
 */
-void GFXcanvas16Opt::drawRGBBitmap(uint16_t x, uint16_t y, const uint16_t *bitmap, uint16_t bitmapWidth, uint16_t offset_x, uint16_t offset_y, uint16_t w, uint16_t h, uint16_t keyColor)
+void GFXcanvas16Opt::drawRGBBitmap(uint16_t x, uint16_t y, uint16_t *bitmap, uint16_t bitmapWidth, uint16_t offset_x, uint16_t offset_y, uint16_t w, uint16_t h, uint16_t keyColor)
 {
   int offset = 0;
   for (int16_t j = 0; j < h; j++, y++)
