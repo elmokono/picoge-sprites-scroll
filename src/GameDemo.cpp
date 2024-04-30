@@ -133,7 +133,8 @@ void GameDemo::draw(void)
       currentLevel.cells2[i].position.y + scrollY, 
       currentLevel.cells2[i].sprite, 
       currentLevel.cellWidth, 
-      currentLevel.cellHeight
+      currentLevel.cellHeight,
+      MAGENTA
     );
   }
 
