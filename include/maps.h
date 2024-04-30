@@ -1,6 +1,12 @@
 #ifndef MAPS_H
 #define MAPS_H
 
+struct cell
+{
+  point position;
+  unsigned short* sprite; //pointer to sprite
+};
+
 // maps and sprites
 struct level
 {
@@ -12,6 +18,7 @@ struct level
   
   unsigned short* bgImage; // pointer to sprite
 
+  cell* cells2; // pointers to cells
   unsigned short** cells; // pointers to sprites
   unsigned short cells_count; //mapCellsWidth*mapCellsHeight
   

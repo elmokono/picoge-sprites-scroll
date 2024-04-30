@@ -121,13 +121,20 @@ void GameDemo::draw(void)
   // tiles
   for (unsigned short i = 0; i < currentLevel.cells_count; i++)
   {
-    if (currentLevel.cells[i] == nullptr)
-      continue;
+    //if (currentLevel.cells[i] == nullptr)
+    //  continue;
 
-    const unsigned short y = (i / currentLevel.mapCellsWidth) * currentLevel.cellHeight;
-    const unsigned short x = (i % currentLevel.mapCellsWidth) * currentLevel.cellWidth;
+    //const unsigned short y = (i / currentLevel.mapCellsWidth) * currentLevel.cellHeight;
+    //const unsigned short x = (i % currentLevel.mapCellsWidth) * currentLevel.cellWidth;
 
-    engine_core_ref->canvas->drawRGBBitmap(x + scrollX, y + scrollY, currentLevel.cells[i], currentLevel.cellWidth, currentLevel.cellHeight);
+    //engine_core_ref->canvas->drawRGBBitmap(x + scrollX, y + scrollY, currentLevel.cells[i], currentLevel.cellWidth, currentLevel.cellHeight);
+    engine_core_ref->canvas->drawRGBBitmap(
+      currentLevel.cells2[i].position.x + scrollX, 
+      currentLevel.cells2[i].position.y + scrollY, 
+      currentLevel.cells2[i].sprite, 
+      currentLevel.cellWidth, 
+      currentLevel.cellHeight
+    );
   }
 
   // player
