@@ -112,22 +112,11 @@ void GameDemo::draw(void)
     scrollY -= player.playerPos.y + scrollY - 96;
 
   if (player.playerPos.y + scrollY < 48)
-    scrollY++; //= player.playerPos.y + scrollY - 32 + 16;
-
-  // if (player.playerPos.x < 32) scrollX++;
-  // if (player.playerPos.y > engine_core_ref->canvas->height() - 32) scrollY++;
-  // if (player.playerPos.y < 32) scrollY--;
+    scrollY++;
 
   // tiles
   for (unsigned short i = 0; i < currentLevel.cells_count; i++)
   {
-    //if (currentLevel.cells[i] == nullptr)
-    //  continue;
-
-    //const unsigned short y = (i / currentLevel.mapCellsWidth) * currentLevel.cellHeight;
-    //const unsigned short x = (i % currentLevel.mapCellsWidth) * currentLevel.cellWidth;
-
-    //engine_core_ref->canvas->drawRGBBitmap(x + scrollX, y + scrollY, currentLevel.cells[i], currentLevel.cellWidth, currentLevel.cellHeight);
     engine_core_ref->canvas->drawRGBBitmap(
       currentLevel.cells2[i].position.x + scrollX, 
       currentLevel.cells2[i].position.y + scrollY, 
